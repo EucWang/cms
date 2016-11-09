@@ -1,64 +1,61 @@
 package cn.wxn.demo.basic_hibernate.model;
 
 public class SystemContext {
+	
+	private static ThreadLocal<Integer> itemsOfPage = new ThreadLocal<Integer>();
+	
+	private static ThreadLocal<Integer> indexOfPage= new ThreadLocal<Integer>();
+	
+	private static ThreadLocal<String> sort= new ThreadLocal<String>();
+	
+	private static ThreadLocal<String> order= new ThreadLocal<String>();
 
-	
-	private ThreadLocal<Integer> itemsOfPage;
-	
-	private ThreadLocal<Integer> indexOfPage;
-	
-	private ThreadLocal<String> sort;
-	
-	private ThreadLocal<String> order;
-	
-	
-
-	public Integer getItemsOfPage() {
+	public static Integer getItemsOfPage() {
 		return itemsOfPage.get();
 	}
 
-	public void setItemsOfPage(Integer itemsOfPage) {
-		this.itemsOfPage.set(itemsOfPage);
+	public static void setItemsOfPage(Integer _itemsOfPage) {
+		itemsOfPage.set(_itemsOfPage);
 	}
 
-	public Integer getIndexOfPage() {
+	public static Integer getIndexOfPage() {
 		return indexOfPage.get();
 	}
 
-	public void setIndexOfPage(Integer indexOfPage) {
-		this.indexOfPage.set(indexOfPage);
+	public static void setIndexOfPage(Integer _indexOfPage) {
+		indexOfPage.set(_indexOfPage);
 	}
 
-	public String getSort() {
+	public static String getSort() {
 		return sort.get();
 	}
 
-	public void setSort(String sort) {
-		this.sort.set(sort);
+	public static void setSort(String _sort) {
+		sort.set(_sort);
 	}
 
-	public String getOrder() {
+	public static String getOrder() {
 		return order.get();
 	}
 
-	public void setOrder(String order) {
-		this.order.set(order);
+	public static void setOrder(String _order) {
+		order.set(_order);
 	}
 	
-	public void removeItemsOfPage(){
-		this.indexOfPage.remove();
+	public static void removeItemsOfPage(){
+		indexOfPage.remove();
 	}
 	
-	public void removeIndexOfPage(){
-		this.indexOfPage.remove();
+	public static void removeIndexOfPage(){
+		indexOfPage.remove();
 	}
 	
-	public void removeSort(){
-		this.sort.remove();
+	public static void removeSort(){
+		sort.remove();
 	}
 	
-	public void removeOrder(){
-		this.order.remove();
+	public static void removeOrder(){
+		order.remove();
 	}
 	
 }
