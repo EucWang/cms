@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.inject.Inject;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,6 +27,10 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return sessionFactory;
 	}
 
+	/**
+	 * @Inject是jsr330 引入的注解
+	 * @param sessionFactory
+	 */
 	@Inject
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
@@ -37,8 +39,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	private Class<T> clazz;
 
 	/**
-	 * 获取泛型对象
-	 * 
+	 * 获取泛型对象 
 	 * @return
 	 */
 	public Class<T> getClazz() {
@@ -91,6 +92,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 			}
 		}
 
+		//别名查询
 		Query query = getSession().createQuery(hql); //查询语句
 		if (alias != null) {
 			Set<String> keySet = alias.keySet();
@@ -105,6 +107,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 			}
 		}
 		
+		//普通查询
 		if (args != null && args.length > 0) {
 			int index = 0;
 			for (Object arg : args) {
@@ -119,48 +122,64 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return list(hql, null, alias);
 	}
 
-	public List<T> find(String hql, Object[] args) {
+	public Pager<T> find(String hql, Object[] args) {
 
 		return null;
 	}
 
-	public List<T> find(String hql, Object args) {
+	public Pager<T> find(String hql, Object args) {
 
 		return null;
 	}
 
-	public List<T> find(String hql) {
+	public Pager<T> find(String hql) {
 
 		return null;
 	}
 
-	public List<T> find(String hql, Object[] args, Map<String, Object> alias) {
+	public Pager<T> find(String hql, Object[] args, Map<String, Object> alias) {
 
 		return null;
 	}
 
-	public List<T> find(String hql, Map<String, Object> alias) {
+	public Pager<T> find(String hql, Map<String, Object> alias) {
 
 		return null;
+	}
+	
+
+
+
+	public Object queryObject(String hql, Object[] args, Map<String, Object> alias) {
+		
+		Query createQuery = getSession().createQuery(hql);
+		setAliasParameter(createQuery , alias);
+		setParameter(createQuery, args);
+		return createQuery.uniqueResult();
 	}
 
 	public Object queryObject(String hql, Object[] args) {
-
-		return null;
+		return this.queryObject(hql, args, null);
 	}
 
 	public Object queryObject(String hql, Object arg) {
-
-		return null;
+		return this.queryObject(hql,new Object[]{arg},null);
 	}
 
 	public Object queryObject(String hql) {
-
-		return null;
+		return this.queryObject(hql,null,null);
 	}
-
+	
+	public Object queryObjectByAlias(String hql, Map<String, Object> alias) {
+		return this.queryObject(hql,null,alias);
+	}
+ 
+	
+	
 	public void updateByHql(String hql, Object[] args) {
-
+		Query createQuery = getSession().createQuery(hql);
+		setParameter(createQuery,args);
+		createQuery.executeUpdate();
 	}
 
 	public void updateByHql(String hql, Object arg) {
@@ -219,6 +238,16 @@ public class BaseDao<T> implements IBaseDao<T> {
 	public Pager<T> findBySql(String sql, Map<String, Object> alias, Class<T> clazz, boolean hasEntity) {
 
 		return null;
+	}
+
+	
+	
+	private void setParameter(Query createQuery, Object[] args) {
+		
+	}
+
+	private void setAliasParameter(Query createQuery, Map<String, Object> alias) {
+		
 	}
 
 }

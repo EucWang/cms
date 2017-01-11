@@ -2,14 +2,28 @@ package cn.wxn.demo.basic_hibernate.model;
 
 public class SystemContext {
 	
+	/**
+	 * 一页中的条目数
+	 */
 	private static ThreadLocal<Integer> itemsOfPage = new ThreadLocal<Integer>();
 	
+	/**
+	 * 页面索引
+	 */
 	private static ThreadLocal<Integer> indexOfPage= new ThreadLocal<Integer>();
 	
+	/**
+	 * 分页的排序字段
+	 */
 	private static ThreadLocal<String> sort= new ThreadLocal<String>();
 	
+	
+	/**
+	 * 列表的排序方式
+	 */
 	private static ThreadLocal<String> order= new ThreadLocal<String>();
 
+	
 	public static Integer getItemsOfPage() {
 		return itemsOfPage.get();
 	}
