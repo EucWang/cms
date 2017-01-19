@@ -79,9 +79,11 @@ public interface IBaseDao<T> {
 	 * 通过hql查询一组对象
 	 * @return
 	 */
+	public Object queryObject(String hql, Object[] args, Map<String, Object> alias);
 	public Object queryObject(String hql, Object[] args);
 	public Object queryObject(String hql, Object arg);
 	public Object queryObject(String hql);
+	public Object queryObjectByAlias(String hql, Map<String, Object> alias);
  
 	
 	/**

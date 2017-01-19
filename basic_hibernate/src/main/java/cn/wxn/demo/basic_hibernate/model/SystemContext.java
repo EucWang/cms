@@ -5,12 +5,12 @@ public class SystemContext {
 	/**
 	 * 一页中的条目数
 	 */
-	private static ThreadLocal<Integer> itemsOfPage = new ThreadLocal<Integer>();
+	private static ThreadLocal<Integer> itemCountOfAPage = new ThreadLocal<Integer>();
 	
 	/**
-	 * 页面索引
+	 * 页面偏移量， 
 	 */
-	private static ThreadLocal<Integer> indexOfPage= new ThreadLocal<Integer>();
+	private static ThreadLocal<Integer> pageOffset= new ThreadLocal<Integer>();
 	
 	/**
 	 * 分页的排序字段
@@ -24,20 +24,20 @@ public class SystemContext {
 	private static ThreadLocal<String> order= new ThreadLocal<String>();
 
 	
-	public static Integer getItemsOfPage() {
-		return itemsOfPage.get();
+	public static Integer getItemCountOfAPage() {
+		return itemCountOfAPage.get();
 	}
 
-	public static void setItemsOfPage(Integer _itemsOfPage) {
-		itemsOfPage.set(_itemsOfPage);
+	public static void setItemCountOfAPage(Integer _itemCountOfAPage) {
+		itemCountOfAPage.set(_itemCountOfAPage);
 	}
 
-	public static Integer getIndexOfPage() {
-		return indexOfPage.get();
+	public static Integer getPageOffset() {
+		return pageOffset.get();
 	}
 
-	public static void setIndexOfPage(Integer _indexOfPage) {
-		indexOfPage.set(_indexOfPage);
+	public static void setPageOffset(Integer _pageOffset) {
+		pageOffset.set(_pageOffset);
 	}
 
 	public static String getSort() {
@@ -56,12 +56,12 @@ public class SystemContext {
 		order.set(_order);
 	}
 	
-	public static void removeItemsOfPage(){
-		indexOfPage.remove();
+	public static void removeItemCountOfAPage(){
+		itemCountOfAPage.remove();
 	}
 	
-	public static void removeIndexOfPage(){
-		indexOfPage.remove();
+	public static void removePageOffset(){
+		pageOffset.remove();
 	}
 	
 	public static void removeSort(){

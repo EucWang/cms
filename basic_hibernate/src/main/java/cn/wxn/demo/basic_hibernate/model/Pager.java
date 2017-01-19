@@ -11,28 +11,29 @@ import java.util.List;
 public class Pager<T> {
 
 	/**
-	 * 
+	 * 一页有多少条item
 	 */
-	private int itemsOfPage;
+	private int itemsCountOfAPage;
 	
 	/**
 	 * 当前的页面索引
+	 * 第几页
 	 */
 	private int indexOfPage;
 	
 	/**
-	 * 
+	 * 总条目数
 	 */
-	private int pages;
+	private long countOfItems;
 	 
 	private List<T> datas;
 	
-	public int getItemsOfPage() {
-		return itemsOfPage;
+	public int getItemsCountOAPage() {
+		return itemsCountOfAPage;
 	}
 
-	public void setItemsOfPage(int itemsOfPage) {
-		this.itemsOfPage = itemsOfPage;
+	public void setItemsCountOfAPage(int itemsCountOfAPage) {
+		this.itemsCountOfAPage = itemsCountOfAPage;
 	}
 
 	public int getIndexOfPage() {
@@ -43,12 +44,12 @@ public class Pager<T> {
 		this.indexOfPage = indexOfPage;
 	}
 
-	public int getPages() {
-		return pages;
+	public long getCountOfItems() {
+		return countOfItems;
 	}
 
-	public void setPages(int pages) {
-		this.pages = pages;
+	public void setCountOfItems(long countOfItems) {
+		this.countOfItems = countOfItems;
 	}
 
 	public List<T> getDatas() {
@@ -58,7 +59,4 @@ public class Pager<T> {
 	public void setDatas(List<T> datas) {
 		this.datas = datas;
 	}
- 
-	
-	
 }
