@@ -41,7 +41,6 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 	
 	@Before
 	public void setUp() throws DataSetException, SQLException, IOException {
-
 		s = sessionFactory.openSession();
 		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(s));
 		this.backupAllTable();
@@ -79,5 +78,48 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		User user = userDao.load(1);
 		System.out.println("abc : " + user.getName());
 		System.out.println("testDelete over");
+	}
+	
+	
+	@Test
+	public void testListByArgs() throws DatabaseUnitException, SQLException{
+		IDataSet dateSet = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
+		//TODO
+	}
+	
+	@Test
+	public void testListByArgsAndAlias() throws DatabaseUnitException, SQLException{
+		IDataSet dateSet = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
+		//TODO
+	}
+	
+	@Test
+	public void testFindByAlias() throws DatabaseUnitException, SQLException{
+		IDataSet dateSet = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
+		//TODO
+	}
+	
+	@Test
+	public void testFindByArgsAndAlias() throws DatabaseUnitException, SQLException{
+		IDataSet dateSet = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
+		//TODO
+	}
+	
+	@Test
+	public void testListSQLByAlias() throws DatabaseUnitException, SQLException{
+		IDataSet dateSet = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
+		//TODO
+	}
+	
+	@Test
+	public void testListSQLByArgsAndAlias() throws DatabaseUnitException, SQLException{
+		IDataSet dateSet = createDateSet("t_user");
+		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
+		//TODO
 	}
 }
