@@ -25,14 +25,14 @@ public interface IBaseDao<T> {
 	 * 删除对象
 	 * @param id
 	 */
-	public void delete(String id);
+	public void delete(Integer id);
 	
 	/**
 	 * 根据id加载对象
 	 * @param id
 	 * @return
 	 */
-	public T load(String id);
+	public T load(Integer id);
 	
 	/**
 	 * 不分页 全部用list, 用hql来查询

@@ -70,14 +70,17 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 
 	@Override
-	public void delete(String id) {
+	public void delete(Integer id) {
 		getSession().delete(this.load(id));
 	} 
 	
 
 	@Override
-	public T load(String id) {
-		return (T) getSession().load(getClazz(), id);
+	public T load(Integer id) {
+		Session session = getSession();
+		Class<T> clazz2 = getClazz();
+		T t = (T) session.load(clazz2, id);
+		return t;
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////
