@@ -5,26 +5,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.inject.Inject;
-import javax.xml.stream.events.EndDocument;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.hql.internal.ast.HqlASTFactory;
 import org.hibernate.transform.Transformers;
 
 import cn.wxn.demo.basic_hibernate.dao.IBaseDao;
 import cn.wxn.demo.basic_hibernate.model.Pager;
 import cn.wxn.demo.basic_hibernate.model.SystemContext;
-import javassist.convert.Transformer;
 
 @SuppressWarnings("unchecked")
 public class BaseDao<T> implements IBaseDao<T> {
 
 	protected Session getSession() {
-		return sessionFactory.openSession();
+		return sessionFactory.getCurrentSession();
 	}
 
 	private SessionFactory sessionFactory;
