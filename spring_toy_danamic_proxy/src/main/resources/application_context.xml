@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="  
+       http://www.springframework.org/schema/beans  
+       http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+       http://www.springframework.org/schema/aop  
+       http://www.springframework.org/schema/aop/spring-aop-3.2.xsd  
+       http://www.springframework.org/schema/context  
+       http://www.springframework.org/schema/context/spring-context-3.2.xsd"> 
+       
+       
+       <context:annotation-config />
+       
+       <context:component-scan base-package="demo" />
+       
+       <bean id="userProxy" class="demo.proxy.UserProxy" factory-method="getInstance">
+       	<constructor-arg ref="userDao" />
+       </bean>
+       
+       <!-- 开启注解模式的 AOP功能 -->
+       <aop:aspectj-autoproxy />
+       
+       <!-- 如下使用xml来配置aop -->
+       <aop:config>
+       	<aop:aspect id="userAspect2" ref="userAspect2">
+       		<aop:pointcut expression="execution(* demo.dao.*.load*(..))||execution(* demo.dao.*.delete*(..))" id="pcUserDao"/>
+       		<aop:before method="aspectBefore" pointcut-ref="pcUserDao"/>
+       		<aop:after method="aspectAfter" pointcut-ref="pcUserDao"/>
+       		<aop:around method="aspectAround" pointcut-ref="pcUserDao"/>
+       	</aop:aspect>
+       </aop:config>
+       
+</beans>
