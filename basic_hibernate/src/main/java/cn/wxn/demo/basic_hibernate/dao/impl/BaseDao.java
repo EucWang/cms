@@ -5,26 +5,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.inject.Inject;
-import javax.xml.stream.events.EndDocument;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.hql.internal.ast.HqlASTFactory;
 import org.hibernate.transform.Transformers;
 
 import cn.wxn.demo.basic_hibernate.dao.IBaseDao;
 import cn.wxn.demo.basic_hibernate.model.Pager;
 import cn.wxn.demo.basic_hibernate.model.SystemContext;
-import javassist.convert.Transformer;
 
 @SuppressWarnings("unchecked")
 public class BaseDao<T> implements IBaseDao<T> {
 
 	protected Session getSession() {
-		return sessionFactory.openSession();
+		return sessionFactory.getCurrentSession();
 	}
 
 	private SessionFactory sessionFactory;
@@ -70,14 +68,17 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 
 	@Override
-	public void delete(String id) {
+	public void delete(Integer id) {
 		getSession().delete(this.load(id));
 	} 
 	
 
 	@Override
-	public T load(String id) {
-		return (T) getSession().load(getClazz(), id);
+	public T load(Integer id) {
+		Session session = getSession();
+		Class<T> clazz2 = getClazz();
+		T t = (T) session.load(clazz2, id);
+		return t;
 	}
 	
 ////////////////////////////////////////////////////////////////////////////////
@@ -201,7 +202,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 		Query query2 = getSession().createQuery(hqlCount);
 		setAlias(alias, query2);
 		setParameter(args, query2);
-		Long count  = (Long) query.uniqueResult();
+		Long count  = (Long) query2.uniqueResult();
 
 		//拼装最终结果
 		pager.setDatas(list);
@@ -230,7 +231,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	private void setPagers(Query query, Pager pager) {
 		Integer itemCountOfAPage = SystemContext.getItemCountOfAPage();
 		Integer pageOffset = SystemContext.getPageOffset();
-		if(itemCountOfAPage == null || itemCountOfAPage < 0) itemCountOfAPage = 20;
+		if(itemCountOfAPage == null || itemCountOfAPage < 0) itemCountOfAPage = 5;
 		if(pageOffset == null || pageOffset < 0) pageOffset = 0;
 		
 		query.setFirstResult(pageOffset).setMaxResults(itemCountOfAPage);
@@ -304,7 +305,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 ////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public List<Object> listBySql(String sql, Object[] args, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> List<N>  listBySql(String sql, Object[] args, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
 		sql = setOrderAndSort(sql);
 		SQLQuery sqlQuery = getSession().createSQLQuery(sql);
 
@@ -319,30 +320,31 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 
 	@Override
-	public List<Object> listBySql(String sql, Object[] args, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> List<N>  listBySql(String sql, Object[] args, Class<Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql, args, null, clazz, hasEntity);
 	}
 
 	@Override
-	public List<Object> listBySql(String sql, Object arg, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> List<N>  listBySql(String sql, Object arg, Class<Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql, new Object[]{arg}, null, clazz, hasEntity);	
 	}
 
 	@Override
-	public List<Object> listBySql(String sql, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> List<N>  listBySql(String sql, Class<Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql, null, null, clazz, hasEntity);
 	}
 
 	@Override
-	public List<Object> listBySql(String sql, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> List<N>  listBySql(String sql, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql,null, alias, clazz, hasEntity);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public Pager<Object> findBySql(String sql, Object[] args, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
-		Pager<Object> retVal = new Pager<>();
+	public  <N extends Object> Pager<N> findBySql(String sql, Object[] args, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
+		Pager<N> retVal = new Pager<>();
 		
 		sql = setOrderAndSort(sql);
 		SQLQuery sqlQuery = getSession().createSQLQuery(sql);
@@ -370,22 +372,22 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 	
 	@Override
-	public Pager<Object> findBySql(String sql, Object[] args, Class<Object> clazz, boolean hasEntity) {
+	public  <N extends Object> Pager<N>  findBySql(String sql, Object[] args, Class<Object> clazz, boolean hasEntity) {
 		return this.findBySql(sql, args, null, clazz, hasEntity);
 	}
 
 	@Override
-	public Pager<Object> findBySql(String sql, Object arg, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> Pager<N>  findBySql(String sql, Object arg, Class<Object> clazz, boolean hasEntity) {
 		return this.findBySql(sql, new Object[]{arg}, clazz, hasEntity);
 	}
 
 	@Override
-	public Pager<Object> findBySql(String sql, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> Pager<N>  findBySql(String sql, Class<Object> clazz, boolean hasEntity) {
 		return this.findBySql(sql, null, null, clazz, hasEntity);
 	}
 
 	@Override
-	public Pager<Object> findBySql(String sql, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
+	public   <N extends Object> Pager<N>  findBySql(String sql, Map<String, Object> alias, Class<Object> clazz, boolean hasEntity) {
 		return findBySql(sql, null, alias, clazz, hasEntity);
 	}
 }
