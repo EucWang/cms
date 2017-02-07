@@ -18,8 +18,24 @@ public class UserService implements IUserService {
 	private static final Logger log = Logger.getLogger("UserService");
 	
 	@Override
-	public void addUser(User user) {
-		userDao.add(user);
+	public User addUser(User user) {
+		if (user.getUsername() == null || "".equals(user.getUsername().trim())) {
+			log.warning("addUser user.getUsername() is null or empty"); 
+			return null;
+		}
+		
+		return userDao.add(user);
+	}
+
+	@Override
+	public User load(Long id) {
+		
+		return userDao.load(id);
+	}
+
+	@Override
+	public void update(User user) {
+		userDao.update(user);
 	}
 
 }

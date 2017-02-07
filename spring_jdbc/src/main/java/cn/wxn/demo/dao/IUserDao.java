@@ -8,13 +8,13 @@ import cn.wxn.demo.entity.User;
 public interface IUserDao {
 
 	
-	boolean add(User user);
+	User add(User user);
 	
 	boolean update(User user);
 	
-	void delete(Integer id);
+	void delete(Long id);
 	
-	User load(Integer id);
+	User load(Long id);
 	
 	List<User> list(String sql, List args);
 	

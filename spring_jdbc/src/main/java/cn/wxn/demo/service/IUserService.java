@@ -4,6 +4,9 @@ import cn.wxn.demo.entity.User;
 
 public interface IUserService {
 
+	User addUser(User user);
 	
-	void addUser(User user);
+	User load(Long id);
+
+	void update(User user);
 }
