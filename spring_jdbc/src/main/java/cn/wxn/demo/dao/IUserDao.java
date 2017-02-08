@@ -12,7 +12,7 @@ public interface IUserDao {
 	
 	boolean update(User user);
 	
-	void delete(Long id);
+	boolean delete(Long id);
 	
 	User load(Long id);
 	

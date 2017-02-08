@@ -9,4 +9,6 @@ public interface IUserService {
 	User load(Long id);
 
 	void update(User user);
+
+	boolean delete(long l);
 }

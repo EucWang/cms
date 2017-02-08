@@ -1,5 +1,7 @@
 package cn.wxn.demo.dao;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -23,6 +26,8 @@ import cn.wxn.demo.entity.User;
 
 @Repository("userDao")
 public class UserDao implements IUserDao {
+	
+	private static final Logger log = Logger.getLogger("UserDao");
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -89,10 +94,14 @@ public class UserDao implements IUserDao {
 				|| (user.getBirthday() != null && !user.getBirthday().equals(load.getBirthday()))) {
 			toAppend.add("birthday=" + user.getBirthday() + " ");
 		}
-		if ((load.getRole() != null && !load.getRole().getId().equals(user.getRole().getId()))
-				|| (user.getRole() != null && !user.getRole().getId().equals(load.getRole().getId()))) {
+		
+		if ((load.getRole() != null && user.getRole() != null && !load.getRole().getId().equals(user.getRole().getId()))
+				|| (user.getRole() != null && user.getRole().getId() != null && load.getRole() == null)) {
 			toAppend.add("gid='" + user.getRole().getId() + "' ");
+		}else if (load.getRole() != null && load.getRole().getId() != null && user.getRole() == null){
+			toAppend.add("gid=null ");			
 		}
+		
 		for(int i=0; i<toAppend.size();i++){
 			sBuffer.append(toAppend.get(i));
 			if (i != toAppend.size() -1) {
@@ -110,40 +119,58 @@ public class UserDao implements IUserDao {
 	}
 
 	@Override
-	public void delete(Long id) {
-
-	}
-
-	@Override
 	public User load(Long id) {
 		String sql = "select u.id uid, u.*, r.* from t_user u left join t_role r on (u.gid=r.id) where u.id=?";
 		Object[] args = new Object[] { id };
-		User result = jdbcTemplate.queryForObject(sql, args, new RowMapper<User>() {
-			@Override
-			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Role role = new Role();
-				User user = new User();
-
-				user.setId(rs.getLong("uid"));
-				user.setUsername(rs.getString("username"));
-				user.setGender(rs.getString("gender"));
-				user.setNickname(rs.getString("nickname"));
-				user.setBirthday(rs.getDate("birthday"));
-
-				role.setId(rs.getLong("gid"));
-				role.setName(rs.getString("name"));
-				role.setDescription(rs.getString("description"));
-
-				user.setRole(role);
-				return user;
-			}
-		});
+		User result = jdbcTemplate.queryForObject(sql, args, new UserRowMapper ());
 		return result;
+	}
+	
+	@Override
+	public boolean delete(Long id) {
+		User load = load(id);
+		if (load == null) {
+			log.warning("the user[id="+id+"] cannot be deleted,no user in db.");
+			return false;
+		}
+		
+		String sql = "delete from t_user where id=?";
+		Object[] args = new Object[]{id};
+		int update = jdbcTemplate.update(sql, args);
+		if (update > 0) {
+			
+			return true;
+		}
+		log.warning("the user[id="+id+"] cannot be deleted,delete fail.");
+		return false;
 	}
 
 	@Override
 	public List<User> list(String sql, List args) {
+//		String sql = " select u.id uid, r.id rid , u.*, r.* from t_user u left join t_role r on (u.gid = r.id) "
+//				+ "group by uid order by username asc limit 0,10;";
 		return null;
 	}
 
+	public class UserRowMapper implements RowMapper<User> {
+		@Override
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			user.setId(rs.getLong("uid"));
+			user.setUsername(rs.getString("username"));
+			user.setGender(rs.getString("gender"));
+			user.setNickname(rs.getString("nickname"));
+			user.setBirthday(rs.getDate("birthday"));
+
+			Long rid = rs.getLong("gid");
+			if (rid != null && rid > 0) {
+				Role role = new Role();
+				role.setId(rid);
+				role.setName(rs.getString("name"));
+				role.setDescription(rs.getString("description"));
+				user.setRole(role);
+			}
+			return user;
+		}
+	}
 }
