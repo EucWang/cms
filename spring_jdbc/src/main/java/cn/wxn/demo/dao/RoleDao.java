@@ -98,4 +98,11 @@ public class RoleDao implements IRoleDao {
 			return role;
 		}
 	}
+
+	@Override
+	public boolean delete(Long id) {
+		String sql = "delete from t_role where id=?";
+		int update = jdbcTemplate.update(sql, id);
+		return update>0?true:false;
+	}
 }

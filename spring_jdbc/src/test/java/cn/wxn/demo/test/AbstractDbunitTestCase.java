@@ -1,4 +1,4 @@
- 
+
 package cn.wxn.demo.test;
 
 import java.io.File;
@@ -8,6 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -20,12 +23,18 @@ import org.dbunit.operation.DatabaseOperation;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xml.sax.InputSource;
-import cn.wxn.demo.utils.DbUtil;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/application_context.xml")
 public class AbstractDbunitTestCase {
 	public static IDatabaseConnection dbunitCon;
-	
+
 	/**
 	 * 备份数据库数据的临时文件
 	 */
@@ -37,7 +46,9 @@ public class AbstractDbunitTestCase {
 	@BeforeClass
 	public static void init() throws InstantiationException, IllegalAccessException, ClassNotFoundException,
 			DatabaseUnitException, IOException, SQLException {
-		dbunitCon = new DatabaseConnection(DbUtil.getConnection());
+		BeanFactory factory = new ClassPathXmlApplicationContext("application_context.xml");
+		DataSource dataSource = factory.getBean(DataSource.class);
+		dbunitCon = new DatabaseConnection(dataSource.getConnection());
 	}
 
 	/**
@@ -56,12 +67,13 @@ public class AbstractDbunitTestCase {
 
 	/**
 	 * 创建dataSet
-	 * @param name  对应的xml配置的测试数据的文件名, 不包括后缀名
+	 * 
+	 * @param name
+	 *            对应的xml配置的测试数据的文件名, 不包括后缀名
 	 * @return
 	 */
 	protected IDataSet createDataSet(String name) throws DataSetException {
-		InputStream inputStream = AbstractDbunitTestCase.class.getClassLoader()
-				.getResourceAsStream("dbunit_xml/" + name + ".xml");
+		InputStream inputStream = AbstractDbunitTestCase.class.getClassLoader().getResourceAsStream(name + ".xml");
 		Assert.assertNotNull("dbunit的基本数据文件不存在", inputStream);
 
 		InputSource inputSource = new InputSource(inputStream);
@@ -72,17 +84,15 @@ public class AbstractDbunitTestCase {
 
 	/**
 	 * 备份所有的数据库表
-	 * @throws SQLException
-	 * @throws IOException
-	 * @throws DataSetException
 	 */
-	protected void backupAllTable() throws SQLException, IOException, DataSetException {
+	protected void backupAllTable() throws SQLException, IOException, DatabaseUnitException {
 		IDataSet dSet = dbunitCon.createDataSet();
 		writeBackupFile(dSet);
 	}
 
 	/**
 	 * 备份多张表
+	 * 
 	 * @param tableNames
 	 * @throws DataSetException
 	 * @throws IOException
@@ -97,6 +107,7 @@ public class AbstractDbunitTestCase {
 
 	/**
 	 * 备份一张表
+	 * 
 	 * @param tableName
 	 */
 	protected void backupCustomTable(String tableName) throws DataSetException, IOException {
@@ -105,6 +116,7 @@ public class AbstractDbunitTestCase {
 
 	/**
 	 * 将数据库中原始数据写入到备份文件中
+	 * 
 	 * @param ds
 	 */
 	private void writeBackupFile(IDataSet ds) throws IOException, DataSetException {
@@ -122,5 +134,4 @@ public class AbstractDbunitTestCase {
 		FlatXmlDataSet flatXmlDataSet = new FlatXmlDataSet(flatXmlProducer);
 		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, flatXmlDataSet);
 	}
-
-} 
+}

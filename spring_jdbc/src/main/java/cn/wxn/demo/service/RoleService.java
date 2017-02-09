@@ -31,4 +31,9 @@ public class RoleService implements IRoleService{
 		return roleDao.loadById(id);
 	}
 
+	@Override
+	public boolean delete(Long id) {
+		return roleDao.delete(id);
+	}
+
 }

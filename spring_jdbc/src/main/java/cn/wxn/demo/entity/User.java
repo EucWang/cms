@@ -88,7 +88,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id="+id+", username=" + username + ", gender=" + gender + ", nickname=" + nickname + ", birthday=" + birthday
-				+ "]";
+				+ (role==null?"":(", gid="+role.getId())) + "]";
 	}
-
+ 
 }

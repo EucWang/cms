@@ -9,4 +9,6 @@ public interface IRoleDao {
 	Role loadByName(String name);
 
 	Role loadById(Long id);
+
+	boolean delete(Long id);
 }

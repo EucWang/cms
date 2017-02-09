@@ -5,9 +5,30 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+ 
 
 public class DbUtil {
-
+	
+	public DbUtil() {
+	}
+	
+	private static DbUtil dbUnit;
+	
+	public static DbUtil getInstance(){
+		if (dbUnit == null) {
+			dbUnit = new DbUtil();
+		}
+		return dbUnit;
+	}
+	
+	
+//	private DataSource dataSource;
+//	
+//	@Resource
+//	public void setDataSource(DataSource ds){
+//		this.dataSource = ds;
+//	}
+	
 	public static Connection getConnection()
 			throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		Properties properties = new Properties();
@@ -22,5 +43,8 @@ public class DbUtil {
 		return connection;
 	}
 	
-	
+//	public Connection getConnection() throws SQLException{
+//		return dataSource.getConnection();
+//		return null;
+//	}
 }

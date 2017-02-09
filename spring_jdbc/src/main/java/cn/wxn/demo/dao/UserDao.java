@@ -122,8 +122,11 @@ public class UserDao implements IUserDao {
 	public User load(Long id) {
 		String sql = "select u.id uid, u.*, r.* from t_user u left join t_role r on (u.gid=r.id) where u.id=?";
 		Object[] args = new Object[] { id };
-		User result = jdbcTemplate.queryForObject(sql, args, new UserRowMapper ());
-		return result;
+		List<User> query = jdbcTemplate.query(sql, args, new UserRowMapper ());
+		if (query == null || query.size() == 0) {
+			return null;
+		}
+		return query.get(0);
 	}
 	
 	@Override
