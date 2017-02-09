@@ -1,3 +1,4 @@
+ 
 package cn.wxn.demo.test;
 
 import java.io.File;
@@ -122,4 +123,4 @@ public class AbstractDbunitTestCase {
 		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, flatXmlDataSet);
 	}
 
-}
+} 
