@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cn.wxn.demo.dao.IUserDao;
 import cn.wxn.demo.entity.User;
+import cn.wxn.demo.exception.UserException;
 
 @Service("userService")
 public class UserService implements IUserService {
@@ -34,7 +35,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void update(User user) {
+	public void update(User user)throws UserException {
 		userDao.update(user);
 	}
 

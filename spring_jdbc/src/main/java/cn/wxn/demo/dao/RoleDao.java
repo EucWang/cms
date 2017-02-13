@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import cn.wxn.demo.entity.Role;
+import cn.wxn.demo.exception.RoleException;
 
 @Repository("roleDao")
 public class RoleDao implements IRoleDao {
@@ -32,11 +34,10 @@ public class RoleDao implements IRoleDao {
 	}
 
 	@Override
-	public Role add(final Role role) {
+	public Role add(final Role role) throws RoleException{
 		Role loadByName = loadByName(role.getName());
 		if (loadByName != null) {
-			log.info("数据库中已经存在相同的一条数据，不能插入名称相同的ROle");
-			return null;
+			throw new RoleException("数据库中已经存在相同的一条数据，不能插入名称相同的ROle");
 		}
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -58,6 +59,7 @@ public class RoleDao implements IRoleDao {
 			role.setId((Long) keyHolder.getKey());
 			return role;
 		}
+		log.warning("插入数据库失败");
 		return null;
 	}
 
@@ -104,5 +106,49 @@ public class RoleDao implements IRoleDao {
 		String sql = "delete from t_role where id=?";
 		int update = jdbcTemplate.update(sql, id);
 		return update>0?true:false;
+	}
+
+	@Override
+	public boolean update(Role role) throws RoleException{
+		Role load = loadById(role.getId());
+		if (load == null) {
+			throw new RoleException("不存在需要更新的角色");
+		}
+		
+		StringBuffer sBuffer = new StringBuffer();
+		sBuffer.append("update t_role set ");
+		List<String> toAppend = new ArrayList<>();
+		if (!load.getName().equals(role.getName())) {
+			toAppend.add("name='" + role.getName() + "' ");
+		}
+		
+		if ((load.getDescription() != null && !load.getDescription().equals(role.getDescription()))
+				|| (role.getDescription() != null && !role.getDescription().equals(load.getDescription()))) {
+			toAppend.add("description='" + role.getDescription() + "' ");
+		}
+		
+		if (toAppend.size() == 0) {
+			throw new RoleException("角色信息相同，不需要更新");
+		}
+
+		for(int i=0; i<toAppend.size();i++){
+			sBuffer.append(toAppend.get(i));
+			if (i != toAppend.size() -1) {
+				sBuffer.append(",");
+			}
+		}
+		sBuffer.append(" where id=?");
+		int update = jdbcTemplate.update(sBuffer.toString(), new Object[] {role.getId()});
+		if (update > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<Role> list() {
+		String sql = "select * from t_role";
+		List<Role> list = jdbcTemplate.query(sql, new RoleRowMapper());
+		return list;
 	}
 }

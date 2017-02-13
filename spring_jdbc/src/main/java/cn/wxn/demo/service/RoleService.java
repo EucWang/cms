@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import cn.wxn.demo.dao.IRoleDao;
 import cn.wxn.demo.entity.Role;
+import cn.wxn.demo.exception.RoleException;
 
 @Service("roleService")
 public class RoleService implements IRoleService{
@@ -14,7 +15,7 @@ public class RoleService implements IRoleService{
 	private IRoleDao roleDao;
 
 	@Override
-	public Role addRole(Role role) {
+	public Role addRole(Role role) throws RoleException {
 		return roleDao.add(role);
 	}
 

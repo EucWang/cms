@@ -1,6 +1,7 @@
 package cn.wxn.demo.service;
 
 import cn.wxn.demo.entity.User;
+import cn.wxn.demo.exception.UserException;
 
 public interface IUserService {
 
@@ -8,7 +9,7 @@ public interface IUserService {
 	
 	User load(Long id);
 
-	void update(User user);
+	void update(User user)throws UserException;
 
 	boolean delete(long l);
 }

@@ -17,6 +17,8 @@ import org.junit.Test;
 
 import cn.wxn.demo.entity.Role;
 import cn.wxn.demo.entity.User;
+import cn.wxn.demo.exception.RoleException;
+import cn.wxn.demo.exception.UserException;
 import cn.wxn.demo.service.IRoleService;
 import cn.wxn.demo.service.IUserService;
 import cn.wxn.demo.utils.EntitiesHelper;
@@ -86,7 +88,12 @@ public class TestJdbc extends AbstractDbunitTestCase {
 			e.printStackTrace();
 		}
 
-		Role addRole = roleService.addRole(new Role("二逼青年", null));
+		Role addRole = null;
+		try {
+			addRole = roleService.addRole(new Role("二逼青年", null));
+		} catch (RoleException e) {
+			e.printStackTrace();
+		}
 		User user = userService.addUser(new User("zuoshizi", "男", "左史兹", new Date(), roleService.loadById(1L)));
 		
 		log.info(user.toString());
@@ -105,7 +112,11 @@ public class TestJdbc extends AbstractDbunitTestCase {
 		user.setNickname("吕布");
 		user.setRole(null);
 
-		userService.update(user);
+		try {
+			userService.update(user);
+		} catch (UserException e) {
+			e.printStackTrace();
+		}
 		User user2 = userService.load(1L);
 		Assert.assertNotNull(user2);
 		Assert.assertEquals(user2.getNickname(), "吕布");

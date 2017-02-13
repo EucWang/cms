@@ -1,7 +1,5 @@
 package cn.wxn.demo.dao;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +12,7 @@ import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Repository;
 
 import cn.wxn.demo.entity.Role;
 import cn.wxn.demo.entity.User;
+import cn.wxn.demo.exception.UserException;
 
 @Repository("userDao")
 public class UserDao implements IUserDao {
@@ -72,7 +72,7 @@ public class UserDao implements IUserDao {
 	}
 
 	@Override
-	public boolean update(User user) {
+	public boolean update(User user) throws UserException{
 		User load = load(user.getId());
 
 		StringBuffer sBuffer = new StringBuffer();
@@ -100,6 +100,10 @@ public class UserDao implements IUserDao {
 			toAppend.add("gid='" + user.getRole().getId() + "' ");
 		}else if (load.getRole() != null && load.getRole().getId() != null && user.getRole() == null){
 			toAppend.add("gid=null ");			
+		}
+		
+		if (toAppend == null || toAppend.size() == 0) {
+			throw new UserException("不需要更新用户信息");
 		}
 		
 		for(int i=0; i<toAppend.size();i++){
