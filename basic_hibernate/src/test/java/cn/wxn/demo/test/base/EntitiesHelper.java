@@ -13,7 +13,7 @@ public class EntitiesHelper {
 		Assert.assertNotNull(expected);
 		
 		Assert.assertEquals(expected.getId(), actual.getId());
-		Assert.assertEquals(expected.getName(), actual.getName());
+		Assert.assertEquals(expected.getUsername(), actual.getUsername());
 	}
 	
 	public static void assertUser(User expected) {

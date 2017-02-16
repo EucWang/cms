@@ -15,44 +15,7 @@ public class User {
 	private Integer id;
 	
 	@Column(name="username")
-	private String name;
-	
-	private String password;
-	
-	private String nickname;
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
-	public User(Integer id, String name, String password, String nickname ) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.password = password;
-		this.nickname = nickname;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public User() {
-		super();
-	} 
-
-	public User(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+	private String username;
 
 	public Integer getId() {
 		return id;
@@ -62,17 +25,27 @@ public class User {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public User() {
+		super();
+	}
+
+	public User(Integer id, String username) {
+		super();
+		this.id = id;
+		this.username = username;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", password=" + password + ", nickname=" + nickname + "]";
+		return "User [id=" + id + ", username=" + username + "]";
 	}
-  
+	
 }

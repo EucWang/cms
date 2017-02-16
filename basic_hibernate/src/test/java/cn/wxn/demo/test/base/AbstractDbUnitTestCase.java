@@ -6,8 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
@@ -19,6 +21,8 @@ import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.operation.DatabaseOperation;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.xml.sax.InputSource;
 
 import junit.framework.Assert;
@@ -30,14 +34,16 @@ public class AbstractDbUnitTestCase {
 
 	@BeforeClass
 	public static void init() throws DatabaseUnitException, SQLException {
-		dbunitCon = new DatabaseConnection(DbUtil.getConnection());
+		BeanFactory beanFactory = new ClassPathXmlApplicationContext("/beans.xml");
+		BasicDataSource dataSource = beanFactory.getBean("dataSource", BasicDataSource.class);
+		Connection connection = dataSource.getConnection();
+		dbunitCon = new DatabaseConnection(connection);
 	}
 
 	protected IDataSet createDateSet(String tname) throws DataSetException {
-//		InputStream is = AbstractDbUnitTestCase.class.getClassLoader()
-//				.getResourceAsStream("dbunit_xml/" + tname + ".xml");
-		InputStream is = AbstractDbUnitTestCase.class.getClassLoader()
-				.getResourceAsStream(tname + ".xml");
+		// InputStream is = AbstractDbUnitTestCase.class.getClassLoader()
+		// .getResourceAsStream("dbunit_xml/" + tname + ".xml");
+		InputStream is = AbstractDbUnitTestCase.class.getClassLoader().getResourceAsStream(tname + ".xml");
 		Assert.assertNotNull("dbunit的基本数据文件不存在", is);
 		return new FlatXmlDataSet(new FlatXmlProducer(new InputSource(is)));
 	}
