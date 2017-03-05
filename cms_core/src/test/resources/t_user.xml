@@ -10,4 +10,38 @@
 	<t_user id="8" username="admin8" nickname="a8" password="123" phone="110" email="abc8@gmail.com" status="1" create_date="2017-02-23 22:12:00" />
 	<t_user id="9" username="admin9" nickname="a9" password="123" phone="110" email="abc9@gmail.com" status="1" create_date="2017-02-23 22:12:00" />
 	<t_user id="10" username="admin10" nickname="a10" password="123" phone="110" email="abc10@gmail.com" status="1" create_date="2017-02-23 22:12:00" />
+	
+	<t_role id="1" name="管理员"  role_type="0"  create_date="2017-03-05 22:12:00" />
+	<t_role id="2" name="文章发布员"  role_type="1"  create_date="2017-03-05 22:12:00" />
+	<t_role id="3" name="文章审核员"  role_type="2"  create_date="2017-03-05 22:12:00" />
+	
+	<t_user_role id="1"  u_id="1"  r_id="1" />
+	<t_user_role id="2"  u_id="1"  r_id="2" />
+	<t_user_role id="3"  u_id="2"  r_id="2" />
+	<t_user_role id="4"  u_id="2"  r_id="3" />
+	<t_user_role id="5"  u_id="3"  r_id="2" />
+	<t_user_role id="6"  u_id="4"  r_id="2" />
+	<t_user_role id="7"  u_id="5"  r_id="2" />
+	<t_user_role id="8"  u_id="6"  r_id="2" />
+	<t_user_role id="9"  u_id="7"  r_id="2" />
+	<t_user_role id="10"  u_id="8"  r_id="2" />
+	<t_user_role id="11"  u_id="9"  r_id="2" />
+	<t_user_role id="12"  u_id="10"  r_id="2" />
+	
+	<t_group id="1"  name="研发部"	create_date="2017-03-05 22:12:00"  />
+	<t_group id="2"  name="市场部"	create_date="2017-03-05 22:12:00"  />
+	<t_group id="3"  name="财务部"	create_date="2017-03-05 22:12:00"  />
+	
+	<t_user_group id="1"  u_id="1"  g_id="2" />
+	<t_user_group id="2"  u_id="1"  g_id="3" />
+	<t_user_group id="3"  u_id="2"  g_id="1" />
+	<t_user_group id="4"  u_id="3"  g_id="1" />
+	<t_user_group id="5"  u_id="4"  g_id="1" />
+	<t_user_group id="6"  u_id="5"  g_id="1" />
+	<t_user_group id="7"  u_id="6"  g_id="2" />
+	<t_user_group id="8"  u_id="7"  g_id="1" />
+	<t_user_group id="9"  u_id="8"  g_id="1" />
+	<t_user_group id="10"  u_id="9"  g_id="2" />
+	<t_user_group id="11"  u_id="10"  g_id="1" />
+	 
 </dataset>

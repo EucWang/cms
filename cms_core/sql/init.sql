@@ -10,3 +10,24 @@ create table t_user (id int primary key auto_increment,
 					email varchar(255),					 
 					status smallint,
 					create_date datetime);
+					
+create table t_role (id int primary key auto_increment,   
+					name varchar(255) not null,   
+					role_type int,
+					create_date datetime);
+					
+create table t_group (id int primary key auto_increment,   
+					name varchar(255) not null,  
+					create_date datetime);
+					
+create table t_user_group (
+		id int primary key auto_increment,
+		u_id int,
+		g_id int
+);
+					
+create table t_user_role (
+		id int primary key auto_increment,
+		u_id int,
+		r_id int
+);

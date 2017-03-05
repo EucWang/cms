@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.inject.Inject;
-
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.operation.DatabaseOperation;
@@ -24,9 +22,6 @@ import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import com.mysql.jdbc.log.Log;
-
 import cn.wxn.demo.basic_hibernate.model.Pager;
 import cn.wxn.demo.basic_hibernate.model.SystemContext;
 import cn.wxn.demo.test.base.AbstractDbUnitTestCase;
@@ -47,13 +42,15 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 
 	private Session s;
 
+	private IDataSet dateSet;
+
 	@Before
 	public void setUp() throws SQLException, IOException, DatabaseUnitException {
 		s = sessionFactory.openSession();
 		TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(s));
 
 		this.backupAllTable();
-		IDataSet dateSet = createDateSet("t_user");
+		dateSet = createDateSet("t_user");
 		DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, dateSet);
 	}
 
@@ -78,7 +75,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 	@Test(expected = ObjectNotFoundException.class)
 	public void testDelete() throws DatabaseUnitException, SQLException {
 		userDao.delete(1);
-		s.flush(); // 强制session刷新缓存, 让语句执行到数据库,不然delete语句会留到最后才执行
+		s.flush(); // 寮哄埗session鍒锋柊缂撳瓨, 璁╄鍙ユ墽琛屽埌鏁版嵁搴�,涓嶇劧delete璇彞浼氱暀鍒版渶鍚庢墠鎵ц
 		User user = userDao.load(1);
 		System.out.println("abc : " + user.getUsername());
 		System.out.println("testDelete over");
@@ -251,10 +248,18 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 
 	@Test
 	public void testAdd(){
-		User user  = new User(21, "admin21");
+		try {
+			DatabaseOperation.TRUNCATE_TABLE.execute(dbunitCon, dateSet);
+		} catch (DatabaseUnitException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		User user  = new User(1, "admin1");
 		userDao.add(user);
 		s.flush();
-		User user2 = userDao.load(21);
+		User user2 = userDao.load(1);
 		EntitiesHelper.assertUser(user2, user);
 	}
 
