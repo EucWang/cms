@@ -53,12 +53,12 @@ public interface IBaseDao<T> {
 	 * @param objs
 	 * @return  返回一组对象
 	 */
-	public List<T> list(String hql, Object[] args);
-	public List<T> list(String hql, Object args);
-	public List<T> list(String hql);
-	
-	public List<T> list(String hql, Object[] args, Map<String, Object> alias);   //既有别名,又有通配符
-	public List<T> list(String hql, Map<String, Object> alias);   //只有别名,没有通配符
+//	public List<T> list(String hql, Object[] args);
+//	public List<T> list(String hql, Object args);
+//	public List<T> list(String hql);
+//	
+//	public List<T> list(String hql, Object[] args, Map<String, Object> alias);   //既有别名,又有通配符
+//	public List<T> list(String hql, Map<String, Object> alias);   //只有别名,没有通配符
 
 	
 	/**
@@ -67,23 +67,23 @@ public interface IBaseDao<T> {
 	 * @param args
 	 * @return
 	 */
-	public Pager<T> find(String hql, Object[] args);
-	public Pager<T> find(String hql, Object args);
-	public Pager<T> find(String hql);
-	
-	public Pager<T> find(String hql, Object[] args, Map<String, Object> alias);   //既有别名,又有通配符
-	public Pager<T> find(String hql, Map<String, Object> alias);   //只有别名,没有通配符
+//	public Pager<T> find(String hql, Object[] args);
+//	public Pager<T> find(String hql, Object args);
+//	public Pager<T> find(String hql);
+//	
+//	public Pager<T> find(String hql, Object[] args, Map<String, Object> alias);   //既有别名,又有通配符
+//	public Pager<T> find(String hql, Map<String, Object> alias);   //只有别名,没有通配符
 	
 	
 	/**
 	 * 通过hql查询一组对象
 	 * @return
 	 */
-	public Object queryObject(String hql, Object[] args, Map<String, Object> alias);
-	public Object queryObject(String hql, Object[] args);
-	public Object queryObject(String hql, Object arg);
-	public Object queryObject(String hql);
-	public Object queryObjectByAlias(String hql, Map<String, Object> alias);
+//	public Object queryObject(String hql, Object[] args, Map<String, Object> alias);
+//	public Object queryObject(String hql, Object[] args);
+//	public Object queryObject(String hql, Object arg);
+//	public Object queryObject(String hql);
+//	public Object queryObjectByAlias(String hql, Map<String, Object> alias);
  
 	
 	/**
@@ -91,9 +91,9 @@ public interface IBaseDao<T> {
 	 * @param hql
 	 * @param args
 	 */
-	public void updateByHql(String hql, Object[] args);
-	public void updateByHql(String hql, Object arg);
-	public void updateByHql(String hql);
+//	public void updateByHql(String hql, Object[] args);
+//	public void updateByHql(String hql, Object arg);
+//	public void updateByHql(String hql);
 	
  
 	//////////////////////////////////////////////////////
@@ -123,12 +123,12 @@ public interface IBaseDao<T> {
 	 * session.createSQLQuery("SELECT NAME, BIRTHDAY FROM CATS").setResultTransformer(Transformers.aliasToBean(CatDTO.class));
 	 * 
 	 */
-	public  <N extends Object> List<N> listBySql(String sql, Object[] args, Class<? extends Object> clazz, boolean hasEntity);
-	public  <N extends Object> List<N> listBySql(String sql, Object arg, Class<? extends Object> clazz, boolean hasEntity);
-	public <N extends Object> List<N> listBySql(String sql, Class<? extends Object> clazz, boolean hasEntity);
-	
-	public <N extends Object> List<N> listBySql(String sql, Object[] args,Map<String, Object>  alias, Class<? extends Object> clazz, boolean hasEntity);
-	public  <N extends Object> List<N> listBySql(String sql, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object> List<N> listBySql(String sql, Object[] args, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object> List<N> listBySql(String sql, Object arg, Class<? extends Object> clazz, boolean hasEntity);
+//	public <N extends Object> List<N> listBySql(String sql, Class<? extends Object> clazz, boolean hasEntity);
+//	
+//	public <N extends Object> List<N> listBySql(String sql, Object[] args,Map<String, Object>  alias, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object> List<N> listBySql(String sql, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity);
 	
 	/**
 	 * 分页查询
@@ -138,11 +138,11 @@ public interface IBaseDao<T> {
 	 * @param hasEntity
 	 * @return
 	 */
-	public <N extends Object>Pager<N> findBySql(String sql, Object[] args, Class<? extends Object> clazz, boolean hasEntity);
-	public  <N extends Object>Pager<N> findBySql(String sql, Object arg, Class<? extends Object> clazz, boolean hasEntity);
-	public  <N extends Object>Pager<N>  findBySql(String sql, Class<? extends Object> clazz, boolean hasEntity);
-	public  <N extends Object>Pager<N>  findBySql(String sql, Object[] args,Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity);
-	public  <N extends Object>Pager<N>  findBySql(String sql, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity);
+//	public <N extends Object>Pager<N> findBySql(String sql, Object[] args, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object>Pager<N> findBySql(String sql, Object arg, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object>Pager<N>  findBySql(String sql, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object>Pager<N>  findBySql(String sql, Object[] args,Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity);
+//	public  <N extends Object>Pager<N>  findBySql(String sql, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity);
 	
 
 	

@@ -85,7 +85,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 	public void testListByArgs() throws DatabaseUnitException, SQLException {
 		SystemContext.setOrder("asc");
 		SystemContext.setSort("id");
-		List<User> list = userDao.list("from User where id>? and id<?", new Object[] { 1, 4 });
+		List<User> list = userDao.listUser("from User where id>? and id<?", new Object[] { 1, 4 });
 
 		Assert.assertNotNull(list);
 		Assert.assertEquals(new Integer(list.size()), new Integer(2));
@@ -102,7 +102,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		Map<String, Object> alias = new HashMap<>();
 		List<Integer> list2 = Arrays.asList(new Integer[] { 3, 5, 6 });
 		alias.put("ids", list2);
-		List<User> list = userDao.list("from User where id>? and id<? and id in (:ids)", new Object[] { 2, 7 }, alias);
+		List<User> list = userDao.listUser("from User where id>? and id<? and id in (:ids)", new Object[] { 2, 7 }, alias);
 
 		Assert.assertNotNull(list);
 		Assert.assertEquals(new Integer(list.size()), new Integer(3));
@@ -123,7 +123,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		Map<String, Object> alias = new HashMap<>();
 		List<Integer> list2 = Arrays.asList(new Integer[] { 3, 5, 6 });
 		alias.put("ids", list2);
-		Pager<User> list = userDao.find("from User where id in (:ids)", alias);
+		Pager<User> list = userDao.findUser("from User where id in (:ids)", alias);
 
 		Assert.assertNotNull(list);
 		Assert.assertEquals(new Integer(list.getItemsCountOAPage()), new Integer(3));
@@ -145,7 +145,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		Map<String, Object> alias = new HashMap<>();
 		List<Integer> list2 = Arrays.asList(new Integer[] { 3, 5, 6, 7, 8, 9, 11, 12, 13, });
 		alias.put("ids", list2);
-		Pager<User> find = userDao.find("from User where id>? and id<? and id in (:ids)", new Object[] { 2, 17 },
+		Pager<User> find = userDao.findUser("from User where id>? and id<? and id in (:ids)", new Object[] { 2, 17 },
 				alias);
 
 		Assert.assertNotNull(find);
@@ -166,7 +166,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		List<Integer> list2 = Arrays.asList(new Integer[] { 3, 5, 6, 7, 8, 9, 11, 12, 13 });
 		alias.put("ids", list2);
 		String sql = "select * from t_user where id in (:ids)";
-		List<User> list = userDao.listBySql(sql, alias, User.class, true);
+		List<User> list = userDao.listUserBySql(sql, alias, User.class, true);
 
 		Assert.assertNotNull(list);
 		Assert.assertEquals(list.size(), 9);
@@ -184,7 +184,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		Map<String, Object> alias = new HashMap<>();
 		List<Integer> list2 = Arrays.asList(new Integer[] { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 });
 		alias.put("ids", list2);
-		List<User> users = userDao.listBySql(sql, args, alias, User.class, true);
+		List<User> users = userDao.listUserBySql(sql, args, alias, User.class, true);
 
 		Assert.assertNotNull(users);
 		Assert.assertEquals(users.size(), 4); 
@@ -203,7 +203,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		Map<String, Object> alias = new HashMap<>();
 		List<Integer> list2 = Arrays.asList(new Integer[] { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 });
 		alias.put("ids", list2);
-		Pager<User> users = userDao.findBySql(sql, args, alias, User.class, true);
+		Pager<User> users = userDao.findUserBySql(sql, args, alias, User.class, true);
 
 		Assert.assertNotNull(users);
 		Assert.assertEquals(users.getDatas().size(), 3); 
@@ -218,7 +218,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 	public void testupdateByHql(){
 		String hql = "update User s set s.username=? where s.id=?";
 		Object[] args = new Object[]{"zhangsan", 1};
-		userDao.updateByHql(hql, args);
+		userDao.updateUserByHql(hql, args);
 		s.flush();
 		
 		User user = userDao.load(1);
@@ -231,7 +231,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 		String hql = "select u.username from User u where id=?";
 //		Map<String, Object> alias = new HashMap<String, Object>();
 //		alias.put("id", 1);
-		Object obj =  userDao.queryObject(hql, 1);
+		Object obj =  userDao.queryUserObject(hql, 1);
 //		System.out.println(obj);
 		Assert.assertEquals((String)obj, "admin1");
 	}

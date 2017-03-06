@@ -1,7 +1,6 @@
 package cn.wxn.demo.basic_hibernate.dao.impl;
 
-import java.lang.reflect.ParameterizedType;
-import java.math.BigDecimal;
+import java.lang.reflect.ParameterizedType; 
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -85,22 +84,22 @@ public class BaseDao<T> implements IBaseDao<T> {
 	
 ////////////////////////////////////////////////////////////////////////////////
 
-	@Override
+//	@Override
 	public List<T> list(String hql, Object[] args) {
 		return list(hql, args, null);
 	}
 
-	@Override
+//	@Override
 	public List<T> list(String hql, Object args) {
 		return list(hql, new Object[]{args}, null);
 	}
  
-	@Override
+//	@Override
 	public List<T> list(String hql) {
 		return list(hql);
 	}
 	
-	@Override
+//	@Override
 	public List<T> list(String hql, Object[] args, Map<String, Object> alias) {
 		hql = setOrderAndSort(hql);        //排序规则，顺序倒序
 		Query query = getSession().createQuery(hql); //查询语句
@@ -128,6 +127,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	 * @param alias
 	 * @param query
 	 */
+	@SuppressWarnings("rawtypes")
 	private void setAlias(Map<String, Object> alias, Query query) {
 		if (alias != null) {
 			Set<String> keySet = alias.keySet();
@@ -162,24 +162,24 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return hql;
 	}
 
-	@Override
+//	@Override
 	public List<T> list(String hql, Map<String, Object> alias) {
 		return list(hql, null, alias);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
 
-	@Override
+//	@Override
 	public Pager<T> find(String hql, Object[] args) {
 		return this.find(hql, args, null);
 	}
 
-	@Override
+//	@Override
 	public Pager<T> find(String hql, Object args) {
 		return this.find(hql, new Object[]{args});
 	}
 
-	@Override
+//	@Override
 	public Pager<T> find(String hql) {
 		return this.find(hql, null,null);
 	}
@@ -187,7 +187,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	/**
 	 * 分页查找
 	 */
-	@Override
+//	@Override
 	public Pager<T> find(String hql, Object[] args, Map<String, Object> alias) {
 		Pager<T> pager = new Pager<T>();
 
@@ -230,6 +230,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	 * 同时对Pager对象也设置相应的数据
 	 * @param query
 	 */
+	@SuppressWarnings("rawtypes")
 	private void setPagers(Query query, Pager pager) {
 		Integer itemCountOfAPage = SystemContext.getItemCountOfAPage();
 		Integer pageOffset = SystemContext.getPageOffset();
@@ -244,7 +245,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 		}
 	}
 
-	@Override
+//	@Override
 	public Pager<T> find(String hql, Map<String, Object> alias) {
 		return this.find(hql,null, alias);
 	}
@@ -254,7 +255,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 	/**
 	 * 查询一个对象
 	 */
-	@Override
+//	@Override
 	public Object queryObject(String hql, Object[] args, Map<String, Object> alias) {
 		Query createQuery = getSession().createQuery(hql);
 		setAlias(alias,createQuery);
@@ -262,22 +263,22 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return createQuery.uniqueResult();
 	}
 
-	@Override
+//	@Override
 	public Object queryObject(String hql, Object[] args) {
 		return this.queryObject(hql, args, null);
 	}
 
-	@Override
+//	@Override
 	public Object queryObject(String hql, Object arg) {
 		return this.queryObject(hql,new Object[]{arg},null);
 	}
 
-	@Override
+//	@Override
 	public Object queryObject(String hql) {
 		return this.queryObject(hql,null,null);
 	}
 
-	@Override
+//	@Override
 	public Object queryObjectByAlias(String hql, Map<String, Object> alias) {
 		return this.queryObject(hql,null,alias);
 	}
@@ -287,26 +288,26 @@ public class BaseDao<T> implements IBaseDao<T> {
 	/**
 	 * 通过hql进行更新
 	 */
-	@Override
+//	@Override
 	public void updateByHql(String hql, Object[] args) {
 		Query createQuery = getSession().createQuery(hql);
 		setParameter(args, createQuery);
 		createQuery.executeUpdate();
 	}
 
-	@Override
+//	@Override
 	public void updateByHql(String hql, Object arg) {
 		this.updateByHql(hql, new Object[]{arg});
 	}
 	
-	@Override
+//	@Override
 	public void updateByHql(String hql) {
 		this.updateByHql(hql, null);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
 
-	@Override
+//	@Override
 	public   <N extends Object> List<N>  listBySql(String sql, Object[] args, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity) {
 		sql = setOrderAndSort(sql);
 		SQLQuery sqlQuery = getSession().createSQLQuery(sql);
@@ -321,22 +322,22 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return sqlQuery.list();
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> List<N>  listBySql(String sql, Object[] args, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql, args, null, clazz, hasEntity);
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> List<N>  listBySql(String sql, Object arg, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql, new Object[]{arg}, null, clazz, hasEntity);	
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> List<N>  listBySql(String sql, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql, null, null, clazz, hasEntity);
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> List<N>  listBySql(String sql, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.listBySql(sql,null, alias, clazz, hasEntity);
 	}
@@ -344,7 +345,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 ////////////////////////////////////////////////////////////////////////////////
 
 	@SuppressWarnings("rawtypes")
-	@Override
+//	@Override
 	public  <N extends Object> Pager<N> findBySql(String sql, Object[] args, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity) {
 		Pager<N> retVal = new Pager<>();
 		
@@ -373,22 +374,22 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return retVal;
 	}
 	
-	@Override
+//	@Override
 	public  <N extends Object> Pager<N>  findBySql(String sql, Object[] args, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.findBySql(sql, args, null, clazz, hasEntity);
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> Pager<N>  findBySql(String sql, Object arg, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.findBySql(sql, new Object[]{arg}, clazz, hasEntity);
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> Pager<N>  findBySql(String sql, Class<? extends Object> clazz, boolean hasEntity) {
 		return this.findBySql(sql, null, null, clazz, hasEntity);
 	}
 
-	@Override
+//	@Override
 	public   <N extends Object> Pager<N>  findBySql(String sql, Map<String, Object> alias, Class<? extends Object> clazz, boolean hasEntity) {
 		return findBySql(sql, null, alias, clazz, hasEntity);
 	}
