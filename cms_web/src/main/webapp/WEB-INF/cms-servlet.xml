@@ -19,6 +19,8 @@
 	<!-- 配置注解的映射和适配器 -->
 	<mvc:annotation-driven />
 
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
+
 	<!-- 组件扫描器 -->
 	<context:component-scan base-package="cn.wxn.demo.controller" />
 
